@@ -2,8 +2,6 @@
    LUCAS CHERES — PORTFOLIO INTERACTIVE ENGINE
    ======================================================== */
 
-let lenisInstance;
-
 document.addEventListener('DOMContentLoaded', () => {
     initParticles();
     initCursorGlow();
@@ -14,8 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initTypewriter();
     initCounterAnimation();
     initActiveNavLink();
-    initLenis();
     initTilt();
+    initCardGlows();
 });
 
 /* ========================================================
@@ -230,28 +228,32 @@ function initMobileMenu() {
 }
 
 /* ========================================================
-   REVEAL ANIMATIONS (Intersection Observer)
+   REVEAL ANIMATIONS (Intersection Observer & GSAP Fallback)
    ======================================================== */
 function initRevealAnimations() {
-    const reveals = document.querySelectorAll('.reveal-up');
-    if (!reveals.length) return;
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+        initGsapAnimations();
+    } else {
+        const reveals = document.querySelectorAll('.reveal-up');
+        if (!reveals.length) return;
 
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry, index) => {
-            if (entry.isIntersecting) {
-                // Stagger animations within the same observation batch
-                setTimeout(() => {
-                    entry.target.classList.add('revealed');
-                }, index * 100);
-                observer.unobserve(entry.target);
-            }
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    // Stagger animations within the same observation batch
+                    setTimeout(() => {
+                        entry.target.classList.add('revealed');
+                    }, index * 100);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -60px 0px'
         });
-    }, {
-        threshold: 0.1,
-        rootMargin: '0px 0px -60px 0px'
-    });
 
-    reveals.forEach(el => observer.observe(el));
+        reveals.forEach(el => observer.observe(el));
+    }
 }
 
 /* ========================================================
@@ -387,42 +389,15 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         const targetId = this.getAttribute('href');
         const target = document.querySelector(targetId);
         if (target) {
-            if (lenisInstance) {
-                lenisInstance.scrollTo(target, {
-                    offset: -80
-                });
-            } else {
-                const offset = 80;
-                const top = target.getBoundingClientRect().top + window.scrollY - offset;
-                window.scrollTo({
-                    top: top,
-                    behavior: 'smooth'
-                });
-            }
+            const offset = 80;
+            const top = target.getBoundingClientRect().top + window.scrollY - offset;
+            window.scrollTo({
+                top: top,
+                behavior: 'smooth'
+            });
         }
     });
 });
-
-/* ========================================================
-   SMOOTH SCROLLING (LENIS)
-   ======================================================== */
-function initLenis() {
-    if (typeof Lenis === 'undefined') return;
-
-    lenisInstance = new Lenis({
-        duration: 1.2,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        smoothWheel: true,
-        smoothTouch: false
-    });
-
-    function raf(time) {
-        lenisInstance.raf(time);
-        requestAnimationFrame(raf);
-    }
-
-    requestAnimationFrame(raf);
-}
 
 /* ========================================================
    3D TILT EFFECT (VANILLA-TILT)
@@ -440,6 +415,113 @@ function initTilt() {
             glare: true,      // Elegant glass glare
             "max-glare": 0.12, // Subtle glare opacity
             perspective: 1200 // Elegant 3D perspective depth
+        });
+    }
+}
+
+/* ========================================================
+   INTERACTIVE SPOTLIGHT SHIMMER CARD GLOWS
+   ======================================================== */
+function initCardGlows() {
+    const cards = document.querySelectorAll(
+        ".detail-card, .achievement-card, .code-window, .skill-category, .goal-card, .model-card, .savings-card, .benefit-item, .contact-card, .chart-card"
+    );
+
+    cards.forEach(card => {
+        card.addEventListener("mousemove", (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            card.style.setProperty("--mouse-x", `${x}px`);
+            card.style.setProperty("--mouse-y", `${y}px`);
+        });
+    });
+}
+
+/* ========================================================
+   GSAP PREMIUM SCROLL-TRIGGER ANIMATIONS
+   ======================================================== */
+function initGsapAnimations() {
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Process all elements with .reveal-up class
+    document.querySelectorAll('.reveal-up').forEach(el => {
+        // If this element contains staggered cards, handle children animation
+        const isStaggerContainer = el.classList.contains('about-details') || 
+                                   el.classList.contains('timeline-achievements') || 
+                                   el.classList.contains('skills-grid') || 
+                                   el.classList.contains('aistack-models') || 
+                                   el.classList.contains('savings-cards') || 
+                                   el.classList.contains('aistack-benefits') || 
+                                   el.classList.contains('goals-grid') || 
+                                   el.classList.contains('contact-cards');
+
+        if (isStaggerContainer) {
+            let itemSelector = '';
+            if (el.classList.contains('about-details')) itemSelector = '.detail-card';
+            else if (el.classList.contains('timeline-achievements')) itemSelector = '.achievement-card';
+            else if (el.classList.contains('skills-grid')) itemSelector = '.skill-category';
+            else if (el.classList.contains('aistack-models')) itemSelector = '.model-card';
+            else if (el.classList.contains('savings-cards')) itemSelector = '.savings-card';
+            else if (el.classList.contains('aistack-benefits')) itemSelector = '.benefit-item';
+            else if (el.classList.contains('goals-grid')) itemSelector = '.goal-card';
+            else if (el.classList.contains('contact-cards')) itemSelector = '.contact-card';
+
+            const items = el.querySelectorAll(itemSelector);
+            if (items.length) {
+                // Instantly show the parent container and remove y shift so children animate cleanly
+                gsap.set(el, { opacity: 1, y: 0 });
+                // Make the children invisible initially
+                gsap.set(items, { opacity: 0, y: 45, scale: 0.95 });
+
+                gsap.to(items, {
+                    scrollTrigger: {
+                        trigger: el,
+                        start: "top 85%",
+                        toggleActions: "play none none none"
+                    },
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    duration: 0.8,
+                    stagger: 0.1,
+                    ease: "power2.out"
+                });
+                return;
+            }
+        }
+
+        // Generic single element reveal-up
+        gsap.to(el, {
+            scrollTrigger: {
+                trigger: el,
+                start: "top 85%",
+                toggleActions: "play none none none"
+            },
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power2.out"
+        });
+    });
+
+    // Animate Code Window separately with nice slide-in
+    const codeWin = document.querySelector('.code-window');
+    if (codeWin) {
+        gsap.set(codeWin, { opacity: 0, x: 60, scale: 0.97 });
+        gsap.to(codeWin, {
+            scrollTrigger: {
+                trigger: codeWin,
+                start: "top 80%",
+                toggleActions: "play none none none"
+            },
+            opacity: 1,
+            x: 0,
+            scale: 1,
+            duration: 1,
+            ease: "power2.out"
         });
     }
 }

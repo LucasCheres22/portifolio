@@ -2235,5 +2235,14 @@ body:hover .cursor-glow {
     .aistack-assumptions {
         flex-direction: column;
     }
+
+/* ========================================================
+   INTERACTIVE SPOTLIGHT SHIMMER CARD GLOW EFFECT
+   ======================================================== */
+.detail-card, .achievement-card, .code-window, .skill-category, .goal-card, .model-card, .savings-card, .benefit-item, .contact-card, .chart-card {
+    background-image: 
+        radial-gradient(400px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), rgba(212, 168, 83, 0.08), transparent 80%),
+        linear-gradient(145deg, rgba(22, 22, 35, 0.75), rgba(18, 18, 26, 0.5)) !important;
 }
+
 
