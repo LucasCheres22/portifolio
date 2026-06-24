@@ -1099,6 +1099,7 @@ body:hover .cursor-glow {
     border: 1px solid var(--bg-glass-border);
     border-radius: var(--radius-lg);
     overflow: hidden;
+    position: relative;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
 }
 
@@ -1926,6 +1927,8 @@ body:hover .cursor-glow {
     border-radius: var(--radius-lg);
     padding: var(--space-xl);
     transition: border-color var(--duration-normal) var(--ease-out);
+    position: relative;
+    overflow: hidden;
 }
 
 .chart-card:hover {

@@ -2,6 +2,8 @@
    LUCAS CHERES — PORTFOLIO INTERACTIVE ENGINE
    ======================================================== */
 
+let lenisInstance;
+
 document.addEventListener('DOMContentLoaded', () => {
     initParticles();
     initCursorGlow();
@@ -12,6 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initTypewriter();
     initCounterAnimation();
     initActiveNavLink();
+    initLenis();
+    initTilt();
 });
 
 /* ========================================================
@@ -380,14 +384,62 @@ function initActiveNavLink() {
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
+        const targetId = this.getAttribute('href');
+        const target = document.querySelector(targetId);
         if (target) {
-            const offset = 80;
-            const top = target.getBoundingClientRect().top + window.scrollY - offset;
-            window.scrollTo({
-                top: top,
-                behavior: 'smooth'
-            });
+            if (lenisInstance) {
+                lenisInstance.scrollTo(target, {
+                    offset: -80
+                });
+            } else {
+                const offset = 80;
+                const top = target.getBoundingClientRect().top + window.scrollY - offset;
+                window.scrollTo({
+                    top: top,
+                    behavior: 'smooth'
+                });
+            }
         }
     });
 });
+
+/* ========================================================
+   SMOOTH SCROLLING (LENIS)
+   ======================================================== */
+function initLenis() {
+    if (typeof Lenis === 'undefined') return;
+
+    lenisInstance = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true,
+        smoothTouch: false
+    });
+
+    function raf(time) {
+        lenisInstance.raf(time);
+        requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+}
+
+/* ========================================================
+   3D TILT EFFECT (VANILLA-TILT)
+   ======================================================== */
+function initTilt() {
+    if (typeof VanillaTilt === 'undefined') return;
+
+    // Apply 3D Tilt only on non-touch desktop screens for performance
+    if (window.innerWidth > 768) {
+        VanillaTilt.init(document.querySelectorAll(
+            ".detail-card, .achievement-card, .code-window, .skill-category, .goal-card, .model-card, .savings-card, .benefit-item, .contact-card, .chart-card"
+        ), {
+            max: 5,           // Subtle tilt angle
+            speed: 800,       // Fast transition back
+            glare: true,      // Elegant glass glare
+            "max-glare": 0.12, // Subtle glare opacity
+            perspective: 1200 // Elegant 3D perspective depth
+        });
+    }
+}
