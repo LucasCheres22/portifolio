@@ -1,0 +1,119 @@
+===============================================================================
+                       RESUMO COMPLETO DO PROJETO: RH TOOL / JOBAPP
+===============================================================================
+
+Este repositório é uma solução integrada de tecnologia de Recursos Humanos (RH)
+e sistemas ATS (Applicant Tracking Systems). Ele está estruturado de duas formas:
+como uma base de conhecimento e biblioteca de algoritmos puros em Python (módulos 1 a 5)
+e como uma aplicação web completa voltada para o usuário final (módulo 6: JobApp).
+
+Abaixo está o detalhamento completo de cada parte do projeto.
+
+-------------------------------------------------------------------------------
+1. ESTRUTURA DOS MÓDULOS DE REFERÊNCIA (1 a 5)
+-------------------------------------------------------------------------------
+
+Os cinco primeiros módulos atuam como guias práticos, ferramentas de lógica e
+protótipos para o desenvolvimento de soluções de parsing e classificação:
+
+*   Módulo 1: Arquitetura e Teoria (1_arquitetura_e_teoria)
+    - funcionamento_ats.md: Guia teórico detalhado do pipeline de ingestão de
+      arquivos (PDF/DOCX), extração física de texto, segmentação lógica de seções
+      e algoritmos de ranqueamento.
+    - tecnicas_de_bypass.md: Análise sobre as limitações e problemas de layout
+      para leitores ATS (como tabelas, colunas, imagens) e táticas de evasão
+      de candidatos (como texto oculto em branco) com respectivas contrapartidas.
+    - analise_de_plataformas.md: Engenharia reversa e análise de plataformas
+      reais como Gupy (IA Gaia), Workday, Greenhouse, Lever e Taleo (Oracle).
+
+*   Módulo 2: Algoritmos e Similaridade (2_algoritmos_e_similaridade)
+    - tfidf_cosseno_puro.py: Código Python puro que implementa o cálculo de TF,
+      IDF e a Similaridade de Cosseno para pontuar relevância entre currículo e vaga.
+    - okapi_bm25_puro.py: Implementação matemática do algoritmo Okapi BM25 do
+      zero, tratando a saturação de frequência de termos (evitando keyword stuffing)
+      e normalização pelo comprimento de documentos.
+    - match_ponderado_avancado.py: Algoritmo de triagem com pesos de competências,
+      habilidades obrigatórias (knockout criteria) e tratamento semântico de
+      sinônimos.
+
+*   Módulo 3: Parsers e NLP (3_parsers_e_nlp)
+    - regex_resume_extractor.py: Regex complexas adaptadas ao mercado brasileiro
+      (CPF, DDD, telefones, e-mail, perfis de LinkedIn e GitHub) e separação de seções.
+    - spacy_ner_training.py: Boilerplate de treinamento de Reconhecimento de
+      Entidades Nomeadas (NER) utilizando SpaCy para currículos.
+    - normalizacao_texto.py: Pré-processamento de textos extraídos, resolvendo
+      hifenizações quebradas, remoção de stopwords e ligaduras tipográficas.
+
+*   Módulo 4: Raspagem e Automação (4_raspagem_e_automacao)
+    - seletores_ats_db.json: Banco de seletores CSS do DOM para automação em
+      formulários das principais plataformas (Gupy, Workday, Lever, Greenhouse).
+    - scraper_linkedin_indeed.py: Script em Python que consome a Guest API pública
+      do LinkedIn via requisições REST com rotação de User-Agents e delays randômicos.
+    - stealth_automation_tips.py: Guia de automação furtiva com Selenium Stealth
+      para contornar sistemas de detecção como Cloudflare e CAPTCHAs.
+
+*   Módulo 5: Dados e Taxonomias (5_dados_e_taxonomias)
+    - taxonomia_habilidades.json: Dicionário estruturado de habilidades de TI
+      e negócios com mapeamento de dezenas de sinônimos.
+    - exemplos_curriculos/: Pasta com exemplos práticos de currículos otimizados
+      (compativel.txt) e não recomendados (incompativel.txt) para testes.
+
+-------------------------------------------------------------------------------
+2. APLICAÇÃO WEB: JOBAPP — OTIMIZADOR DE CURRÍCULO ATS (Módulo 6_)
+-------------------------------------------------------------------------------
+
+O diretório '6_otimizador_curriculo_ats' abriga a aplicação de produção principal.
+É um sistema web estático hospedado no Vercel (com roteamento configurado em vercel.json)
+que interage diretamente com APIs e o backend do Supabase.
+
+A aplicação é dividida em submódulos interativos:
+
+*   Página Principal (index.html / app.js / styles.css):
+    - Reúne o buscador de vagas (agregando resultados do LinkedIn Guest API e
+      ProgramaThor).
+    - Realiza a análise local do currículo em relação à descrição da vaga usando
+      mecanismos implementados em JavaScript (BM25, Cosseno e contagem de keywords).
+    - Permite visualização e edição em tempo real do currículo original e otimizado.
+
+*   Construtor de Currículos (criarcurriculo/index.html e app.js):
+    - Editor de currículos baseado em formulários com suporte a múltiplos templates
+      de estilização (Clássico, Moderno, Compacto).
+    - Gera currículos ATS-Friendly em PDF vetorial diretamente no cliente usando
+      a biblioteca PDF-lib.
+
+*   Avaliação Flash (flash/index.html e app.js):
+    - Mapeia rapidamente os pontos fracos de um currículo para diversos cargos
+      pretendidos.
+    - Utiliza a biblioteca PDF.js para extrair textos de PDFs carregados localmente.
+
+*   Busca de Empresas & Networking (busca-empresas/index.html e app.js):
+    - Permite filtrar empresas por setor, localização e tamanho.
+    - Permite gerar pitches e abordagens frias de recrutamento personalizados por IA
+      (via e-mail ou LinkedIn) de acordo com o tom escolhido (formal, amigável, direto).
+
+*   Painel de Métricas (dashboard.html e dashboard.css):
+    - Dashboard voltado ao monitoramento em tempo real do uso do sistema.
+    - Exibe total de requisições, custos associados a tokens de IA (convertidos em
+      USD e BRL), consumo médio por chamada e distribuição de uso de tokens.
+
+*   Infraestrutura do Backend & Supabase (supabase/):
+    - SQL Schemas (sql/): Estrutura para gerenciamento de tokens de usuários
+      (tokens_schema.sql), transações (admin_token_transactions_view.sql), vagas
+      (vagas_schema.sql) e triggers de e-mail confiável (trusted_email_trigger.sql).
+    - Edge Functions (functions/):
+      * ai-completion: Responsável por processar a análise semântica e reescrita
+        usando LLMs da Groq (llama-3.3-70b-versatile) com fallback estruturado.
+      * create-checkout: Criação de sessões de checkout de pagamentos.
+      * mercadopago-webhook / stripe-webhook: Processamento de webhooks de pagamento
+        para creditar tokens na carteira do usuário de forma assíncrona.
+
+*   Engenharia de Prompts (prompts/):
+    - SYSTEM_PROMPT.md: Define o papel do JobApp Engine como recrutador sênior
+      e especialista em bypass ATS.
+    - ANALYSIS_PROMPT.md: Estrutura a resposta de diagnóstico em JSON consistente.
+    - REWRITE_PROMPT.md: Lógica detalhada de reescrita, aplicando técnicas de bypass
+      como hifenizações, correspondência de keywords e termos compostos em inglês/português.
+
+===============================================================================
+Documento gerado automaticamente para fins de documentação técnica.
+===============================================================================
