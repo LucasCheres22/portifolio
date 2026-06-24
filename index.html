@@ -339,8 +339,21 @@
             <!-- CHARTS AREA -->
             <div class="aistack-charts-title reveal-up">
                 <h3>Análise de Custo: Cloud vs. Infraestrutura Própria</h3>
-                <p>Projeção realista para empresa de médio porte (~300 funcionários, uso intensivo de IA)</p>
-                <div class="aistack-assumptions">
+                <p>Compare as projeções financeiras e o retorno de investimento (ROI) de acordo com a necessidade da sua empresa.</p>
+
+                <!-- COMPANY SIZE SELECTOR -->
+                <div class="aistack-selector-container">
+                    <label for="companySizeSelector" class="selector-label">Selecione o porte da sua empresa:</label>
+                    <div class="custom-select-wrapper">
+                        <select id="companySizeSelector" class="company-selector">
+                            <option value="small">Pequeno Porte (~30 colaboradores usando IA)</option>
+                            <option value="medium" selected>Médio Porte / Sercompe (~300 colaboradores usando IA)</option>
+                            <option value="enterprise">Grande Porte / Multinacional (~1500+ colaboradores usando IA)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="aistack-assumptions" id="aistackAssumptions">
                     <span>📌 Empresa-referência: porte Sercompe</span>
                     <span>📌 Hardware: 2× NVIDIA RTX 4090 ou 4× RTX Spark (cluster de baixo custo)</span>
                     <span>📌 Investimento inicial: R$ 194.000 (com RTX Spark) ou R$ 220.000 (com RTX 4090)</span>
@@ -383,7 +396,7 @@
                 </div>
                 <div class="savings-card">
                     <div class="savings-icon">⚡</div>
-                    <div class="savings-value">~18 meses</div>
+                    <div class="savings-value" id="savingsBreakeven">~18 meses</div>
                     <div class="savings-label">Break-even do investimento</div>
                 </div>
                 <div class="savings-card">
@@ -396,27 +409,29 @@
             <!-- HARDWARE SPEC -->
             <div class="hardware-spec reveal-up">
                 <h3>Stack de Hardware Recomendado</h3>
-                <div class="hardware-table">
+                <div class="hardware-table" id="hardwareTableContainer">
                     <div class="hardware-row header">
                         <span>Componente</span><span>Especificação</span><span>Custo est. (BRL)</span>
                     </div>
-                    <div class="hardware-row">
-                        <span>🎮 GPUs</span><span>2× NVIDIA RTX 4090 24GB ou as novas RTX Spark 16GB (baixo custo)</span><span>R$ 70.000 / R$ 44.000</span>
-                    </div>
-                    <div class="hardware-row">
-                        <span>🖥️ Servidor</span><span>AMD EPYC / Threadripper PRO + 256GB RAM</span><span>R$ 55.000</span>
-                    </div>
-                    <div class="hardware-row">
-                        <span>💾 Armazenamento</span><span>4TB NVMe RAID + 20TB HDD backup</span><span>R$ 18.000</span>
-                    </div>
-                    <div class="hardware-row">
-                        <span>🔌 Infraestrutura</span><span>UPS, rack, rede 10Gbps, refrigeração</span><span>R$ 35.000</span>
-                    </div>
-                    <div class="hardware-row">
-                        <span>⚙️ Setup & Deploy</span><span>Configuração, Ollama/vLLM, integração corporativa</span><span>R$ 42.000</span>
-                    </div>
-                    <div class="hardware-row total">
-                        <span>💰 Total</span><span>Infraestrutura completa e otimizada (Custo com RTX Spark / RTX 4090)</span><span>R$ 194.000 / R$ 220.000</span>
+                    <div id="hardwareTableBody">
+                        <div class="hardware-row">
+                            <span>🎮 GPUs</span><span>2× NVIDIA RTX 4090 24GB ou as novas RTX Spark 16GB (baixo custo)</span><span>R$ 70.000 / R$ 44.000</span>
+                        </div>
+                        <div class="hardware-row">
+                            <span>🖥️ Servidor</span><span>AMD EPYC / Threadripper PRO + 256GB RAM</span><span>R$ 55.000</span>
+                        </div>
+                        <div class="hardware-row">
+                            <span>💾 Armazenamento</span><span>4TB NVMe RAID + 20TB HDD backup</span><span>R$ 18.000</span>
+                        </div>
+                        <div class="hardware-row">
+                            <span>🔌 Infraestrutura</span><span>UPS, rack, rede 10Gbps, refrigeração</span><span>R$ 35.000</span>
+                        </div>
+                        <div class="hardware-row">
+                            <span>⚙️ Setup & Deploy</span><span>Configuração, Ollama/vLLM, integração corporativa</span><span>R$ 42.000</span>
+                        </div>
+                        <div class="hardware-row total">
+                            <span>💰 Total</span><span>Infraestrutura completa e otimizada (Custo com RTX Spark / RTX 4090)</span><span>R$ 194.000 / R$ 220.000</span>
+                        </div>
                     </div>
                 </div>
             </div>
