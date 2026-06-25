@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Currículo - Lucas Cheres</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        @page {
+            margin: 0;
+            /* Let HTML margins handle it for better control */
+            size: A4 portrait;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #222;
+            line-height: 1.5;
+            margin: 0;
+            padding: 12mm 15mm;
+            background: #fff;
+            box-sizing: border-box;
+            -webkit-print-color-adjust: exact;
+        }
+
+        h1 { font-size: 21px; margin: 0 0 4px 0; color: #111; font-weight: 700; letter-spacing: -0.5px; }
+        h2 { font-size: 12px; color: #0052cc; border-bottom: 2px solid #f0f0f0; padding-bottom: 4px; margin-top: 18px; margin-bottom: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        h3 { font-size: 11px; margin: 0 0 4px 0; color: #111; font-weight: 600; }
+        
+        .subtitle { font-size: 12px; color: #444; margin-bottom: 12px; font-weight: 500; }
+        p { margin: 0 0 10px 0; font-size: 11px; color: #333; text-align: justify; }
+        
+        ul { margin: 0 0 12px 0; padding-left: 18px; font-size: 11px; color: #333; }
+        li { margin-bottom: 4px; text-align: justify; }
+        
+        .contact-info { display: flex; flex-wrap: wrap; gap: 15px; font-size: 10px; margin-bottom: 20px; color: #555; }
+        .contact-info div { display: flex; align-items: center; gap: 4px; }
+        
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        
+        .job-item { margin-bottom: 15px; }
+        .job-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
+        .date { font-size: 11px; color: #666; font-weight: 500; font-style: italic; }
+        
+        .skills-section h4 { margin: 10px 0 6px 0; font-size: 11px; color: #444; font-weight: 600; }
+        .tag { display: inline-block; background: #f4f6f8; border: 1px solid #dcdfe3; color: #2c3e50; padding: 2px 8px; border-radius: 4px; font-size: 9.5px; margin: 0 4px 4px 0; font-weight: 500; }
+
+        strong {
+            color: #111;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Lucas Cheres</h1>
+    <div class="subtitle">Engenheiro de Software & Especialista em IA | Agente de Melhoria Focada</div>
+
+    <div class="contact-info">
+        <div>📍 Brasil</div>
+        <div>📧 lucascheres18@gmail.com</div>
+        <div>📞 +55 47 98479-7871</div>
+        <div>🔗 linkedin.com/in/lucascheres</div>
+        <div>🌐 <a href="https://lucascheres22.github.io/portifolio"
+                style="text-decoration: none; color: inherit;">lucascheres22.github.io/portifolio</a></div>
+    </div>
+
+    <h2>Resumo Profissional</h2>
+    <p>
+        Profissional híbrido operando na intersecção entre engenharia de software e otimização industrial. Minha jornada
+        começou no chão de fábrica e evoluiu para o desenvolvimento de soluções inteligentes de TI.
+        Como Analista de Processos na Whirlpool Corporation, liderei projetos de WCM que geraram <strong>R$ 5,3 milhões
+            em economia anual auditada</strong>.
+        Atualmente, atuo com desenvolvimento de software (Python, JavaScript/TypeScript, SQL), focando em inteligência
+        artificial aplicada, automação de dados e arquitetura de sistemas para resolver gargalos reais de negócios e
+        fábricas.
+    </p>
+
+    <h2>Experiência Profissional</h2>
+    <div class="job-item">
+        <div class="job-header">
+            <h3>Analista de Processos & Projetos (WCM)</h3>
+            <span class="date">Whirlpool Corporation (Brastemp/Consul)</span>
+        </div>
+        <ul>
+            <li><strong>R$ 5,3 Mi em Hard Saving:</strong> Liderança técnica de 5 projetos estratégicos (Xpert / WCM),
+                resultando em expressiva redução de custos operacionais auditados.</li>
+            <li><strong>2º Lugar no Prêmio WCM:</strong> Implementação de melhorias estruturadas no pilar de Melhoria
+                Focada, eliminando perdas críticas através de análise de dados.</li>
+            <li><strong>Arquitetura de Processos & OEE:</strong> Automação de indicadores de produtividade e lógica de
+                dados para balanceamento de postos de trabalho (GBO).</li>
+            <li><strong>Modelagem Técnica & Layouts:</strong> Otimização de fluxos industriais via AutoCAD e Blender 3D
+                (3G + 5W1H) para eliminação de perdas logísticas e operacionais.</li>
+            <li><strong>Treinamentos e Base Operacional:</strong> Coordenação de treinamentos e forte vivência prévia de
+                chão de fábrica (manutenção autônoma e inspeção de qualidade), garantindo visão realista e aplicável.
+            </li>
+        </ul>
+    </div>
+
+    <h2>Projetos em Destaque</h2>
+    <div class="job-item">
+        <div class="job-header">
+            <h3>JobApp — Plataforma SaaS e Otimizador de Currículos (IA)</h3>
+            <span class="date">Projeto Full-Stack Independente</span>
+        </div>
+        <ul>
+            <li>Desenvolvimento de plataforma que combina algoritmos clássicos de NLP (TF-IDF, Cosseno e BM25 em Python)
+                e LLMs (Llama 3.3 70B) para otimização de currículos contra sistemas ATS.</li>
+            <li>Construção do backend escalável utilizando Supabase e Edge Functions, com integrações robustas (Stripe e
+                MercadoPago).</li>
+            <li>Implementação de parser avançado e Extração de Entidades Nomeadas (NER) utilizando SpaCy e regex
+                aplicados ao mercado de trabalho brasileiro.</li>
+        </ul>
+    </div>
+
+    <div class="grid-2">
+        <div>
+            <h2>Formação Acadêmica</h2>
+            <ul>
+                <li><strong>Engenharia de Software</strong><br>Estácio de Sá</li>
+                <li style="margin-top: 6px;"><strong>Especialização em Liderança</strong><br>Harvard Business Publishing
+                    <br><em>(Bolsista Selecionado)</em></li>
+            </ul>
+
+            <h2>Idiomas</h2>
+            <ul>
+                <li>Inglês: Fluente</li>
+                <li>Espanhol: Intermediário</li>
+                <li>Português: Nativo</li>
+            </ul>
+        </div>
+        <div>
+            <h2>Habilidades Técnicas</h2>
+            <div class="skills-section">
+                <h4>Linguagens de Programação</h4>
+                <div>
+                    <span class="tag">Python</span>
+                    <span class="tag">JavaScript</span>
+                    <span class="tag">TypeScript</span>
+                    <span class="tag">SQL</span>
+                    <span class="tag">HTML/CSS</span>
+                </div>
+                <h4>Ferramentas & Cloud</h4>
+                <div>
+                    <span class="tag">PostgreSQL</span>
+                    <span class="tag">Supabase</span>
+                    <span class="tag">Git</span>
+                    <span class="tag">Docker</span>
+                    <span class="tag">Node.js</span>
+                    <span class="tag">Vercel</span>
+                </div>
+                <h4>Processos & Engenharia Industrial</h4>
+                <div>
+                    <span class="tag">WCM</span>
+                    <span class="tag">Six Sigma</span>
+                    <span class="tag">OEE</span>
+                    <span class="tag">AutoCAD</span>
+                    <span class="tag">Blender 3D</span>
+                    <span class="tag">Lean Manufacturing</span>
+                    <span class="tag">Análise de Dados</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
